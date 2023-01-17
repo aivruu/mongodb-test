@@ -10,12 +10,13 @@ val release = property("version") as String
 repositories {
 	mavenLocal()
 	maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+	maven("https://oss.sonatype.org/content/repositories/snapshots/")
 	mavenCentral()
 }
 
 dependencies {
 	compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
-	compileOnly("org.mongodb:mongo-java-driver:3.12.7")
+	compileOnly("org.mongodb:mongo-java-driver:4.8.0")
 }
 
 bukkit {
