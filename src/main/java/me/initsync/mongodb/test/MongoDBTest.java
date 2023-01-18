@@ -1,8 +1,5 @@
 package me.initsync.mongodb.test;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import me.initsync.mongodb.test.api.model.database.DatabaseManager;
 import me.initsync.mongodb.test.api.model.profile.ProfileManager;
 import me.initsync.mongodb.test.listeners.PlayerListener;
@@ -20,18 +17,38 @@ public final class MongoDBTest extends JavaPlugin {
 	private ProfileManager profileManager;
 	private DatabaseManager databaseManager;
 	
-	public String getRelease() {
-		return release;
-	}
-	
+	/**
+	 * Returns the MongoDBTest instance.
+	 *
+	 * @return The MongoDBTest instance. Can return null if the field isn't initialized.
+	 */
 	public static MongoDBTest getPlugin() {
 		return plugin;
 	}
 	
+	/**
+	 * Returns the 'release' field.
+	 *
+	 * @return An String.
+	 */
+	public String getRelease() {
+		return release;
+	}
+	
+	/**
+	 * Returns the ProfileManager instance.
+	 *
+	 * @return The ProfileManager instance. Can return null if the field isn't initialized.
+	 */
 	public ProfileManager getProfileManager() {
 		return profileManager;
 	}
 	
+	/**
+	 * Returns the DatabaseManager instance.
+	 *
+	 * @return An DatabaseManager instance. Can return null if the field isn't initialized.
+	 */
 	public DatabaseManager getDatabaseManager() {
 		return databaseManager;
 	}
@@ -56,14 +73,13 @@ public final class MongoDBTest extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		if (profileManager != null) {
-			// Can that this kills the server :8
+			getLogger().info("Saving players data");
+			
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				profileManager.getProfile(player.getUniqueId())
 					 .getUser()
 					 .saveData();
 			}
-			
-			getLogger().info("Saved players data successful!");
 		}
 		
 		if (databaseManager != null) databaseManager = null;

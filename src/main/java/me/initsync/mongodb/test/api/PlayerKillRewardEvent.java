@@ -23,14 +23,29 @@ public class PlayerKillRewardEvent extends Event implements Cancellable {
 		this.levelsReward = levelsReward;
 	}
 	
+	/**
+	 * Returns the player for this event.
+	 *
+	 * @return The player.
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 	
+	/**
+	 * Returns the interface of the killed entity.
+	 *
+	 * @return The entity.
+	 */
 	public Entity getKilledEntity() {
 		return killedEntity;
 	}
 	
+	/**
+	 * Returns the amount of levels rewarded.
+	 *
+	 * @return The levels rewarded.
+	 */
 	public int getLevelsReward() {
 		return levelsReward;
 	}
