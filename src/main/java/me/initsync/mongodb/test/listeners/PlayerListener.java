@@ -11,6 +11,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Objects;
@@ -53,5 +54,10 @@ public class PlayerListener implements Listener {
 		player.setLevel(user.getLevel());
 		
 		user.saveData();
+	}
+	
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		profileManager.getProfile(event.getEntity().getUniqueId()).getUser().decrementLevel(1);
 	}
 }
