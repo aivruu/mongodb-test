@@ -17,7 +17,7 @@ repositories {
 dependencies {
 	compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
 	
-	implementation("org.mongodb:mongo-java-driver:4.8.0")
+	implementation("org.mongodb:mongo-java-driver:3.12.7")
 }
 
 bukkit {
