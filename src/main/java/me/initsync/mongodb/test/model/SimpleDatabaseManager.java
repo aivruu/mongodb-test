@@ -22,7 +22,10 @@ public class SimpleDatabaseManager implements DatabaseManager {
 	public boolean establishConnection() {
 		try {
 			client = new MongoClient(
-				 new ServerAddress("", 27017),
+				 new ServerAddress(
+					  "rs0/n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017",
+					  27017
+				 ),
 				 Collections.singletonList(MongoCredential.createCredential(
 					  "up2iry1szhbk9ygcex5e",
 					  "b9y5zvptnbpcivp",
@@ -32,12 +35,11 @@ public class SimpleDatabaseManager implements DatabaseManager {
 			
 			database = client.getDatabase("b9y5zvptnbpcivp");
 			dataCollection = database.getCollection("Data");
+			return true;
 		} catch (IllegalArgumentException exception) {
 			exception.printStackTrace();
 			return false;
 		}
-		
-		return true;
 	}
 	
 	@Override
