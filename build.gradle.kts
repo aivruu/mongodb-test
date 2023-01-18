@@ -16,7 +16,8 @@ repositories {
 
 dependencies {
 	compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
-	compileOnly("org.mongodb:mongo-java-driver:4.8.0")
+	
+	implementation("org.mongodb:mongo-java-driver:4.8.0")
 }
 
 bukkit {
@@ -39,6 +40,10 @@ tasks {
 	shadowJar {
 		archiveFileName.set("MongoDB-Test-$release.jar")
 		destinationDirectory.set(file("$rootDir/bin/"))
+		minimize()
+		
+		relocate("com.mongodb", "$directory.libs.mongodb")
+		relocate("org.bson", "$directory.libs.bson")
 	}
 	
 	clean {
