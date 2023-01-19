@@ -7,39 +7,57 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import me.initsync.mongodb.test.api.model.database.DatabaseManager;
 import org.bson.Document;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class SimpleDatabaseManager implements DatabaseManager {
+	private final FileConfiguration config;
+	
 	private MongoClient client;
 	private MongoDatabase database;
 	private MongoCollection<Document> dataCollection;
 	
-	public SimpleDatabaseManager() {}
+	public SimpleDatabaseManager(FileConfiguration config) {
+		this.config = Objects.requireNonNull(config, "The configuration file is null.");
+	}
 	
 	@Override
 	@SuppressWarnings("deprecation")
 	public boolean establishConnection() {
 		try {
 			client = new MongoClient(
-				 new ServerAddress(
-					  "rs0/n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017",
-					  27017
-				 ),
+				 new ServerAddress(config.getString("host"), config.getInt("port")),
 				 Collections.singletonList(MongoCredential.createCredential(
-					  "up2iry1szhbk9ygcex5e",
-					  "b9y5zvptnbpcivp",
-					  "W5zIF0DoWFIOhTgl2xjO".toCharArray())
+					  config.getString("username"),
+					  config.getString("database"),
+					  config.getString("password").toCharArray())
 				 )
 			);
 			
-			database = client.getDatabase("b9y5zvptnbpcivp");
-			dataCollection = database.getCollection("Data");
-			return true;
+			database = client.getDatabase(config.getString("database"));
+			dataCollection = database.getCollection(config.getString("collection-name"));
 		} catch (IllegalArgumentException exception) {
 			exception.printStackTrace();
 			return false;
 		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean closeConnection() {
+		try {
+			client.close();
+			database = null;
+			dataCollection = null;
+		} catch (SecurityException exception) {
+			exception.printStackTrace();
+			return false;
+		}
+		
+		return true;
 	}
 	
 	@Override
