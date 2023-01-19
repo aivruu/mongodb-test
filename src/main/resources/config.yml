@@ -1,0 +1,6 @@
+collection-name: "userData" # This is the collection data name, also known as database table.
+host: localhost
+port: 3306
+database: mongo-db
+username: root
+password: ''
