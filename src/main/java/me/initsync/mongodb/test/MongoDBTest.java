@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.UUID;
+
 public final class MongoDBTest extends JavaPlugin {
 	private static MongoDBTest plugin;
 	
@@ -58,11 +60,14 @@ public final class MongoDBTest extends JavaPlugin {
 		plugin = this;
 		
 		profileManager = new SimpleProfileManager();
-		databaseManager = new SimpleDatabaseManager();
 	}
 	
 	@Override
 	public void onEnable() {
+		getConfig().options().copyDefaults(true);
+		saveDefaultConfig();
+		
+		databaseManager = new SimpleDatabaseManager(getConfig());
 		databaseManager.setDatabaseProperties();
 		
 		if (databaseManager.establishConnection()) getLogger().info("MongoDB connection established successful!");
@@ -76,12 +81,15 @@ public final class MongoDBTest extends JavaPlugin {
 			getLogger().info("Saving players data");
 			
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				profileManager.getProfile(player.getUniqueId())
-					 .getUser()
-					 .saveData();
+				UUID uuid = player.getUniqueId();
+				profileManager.getProfile(uuid).getUser().saveData();
+				
+				uuid = null;
 			}
+			
+			profileManager = null;
 		}
 		
-		if (databaseManager != null) databaseManager = null;
+		if (databaseManager != null && databaseManager.closeConnection()) databaseManager = null;
 	}
 }
