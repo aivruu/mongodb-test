@@ -14,6 +14,13 @@ public interface DatabaseManager {
 	boolean establishConnection();
 	
 	/**
+	 * Close the database connection.
+	 *
+	 * @return A boolean value. True if the connection was closed successful, else return false.
+	 */
+	boolean closeConnection();
+	
+	/**
 	 * Sets the database booting properties.
 	 */
 	void setDatabaseProperties();
